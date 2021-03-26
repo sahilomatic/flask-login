@@ -1,0 +1,6 @@
+Flask==1.0.2
+gunicorn==19.7.1
+ipdb==0.10.3
+mongoengine==0.15.0
+protobuf==3.6.0
+celery==4.2.1

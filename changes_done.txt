@@ -1,0 +1,25 @@
+Following are the changes done:
+
+1) SECRET_KEY variable is added in settings.local_setting  to get key from path variable of environment.This would be used for JSW tokenization key.
+
+2) While adding a new user in services.register_service werkzeug.security is used to hash the password and then store in mongodb document.
+
+3) login() in services.user_service  fetch matching data from database and hashed jsw token is created which is passed to client for 
+   authorization while using different API's.
+
+4) A static method decode_auth_token() is created in services.user_service to authorize the user jsw token. and based on it. client can use different API's.
+
+5) Celery app is created in app.py which periodically stores data of last login user in a new collection.
+
+6) Requirements.txt is also updated to run script for installing celery when docker-compose build is used and depencecy of redis is also mentioned in docker-compose.yml 
+ as redis is used as message brocker for celery app.
+
+7) Message Broker related information is added in settings.local_setting which would be used by Celery App and Celery app configuration is done in app module.
+
+8) New module celery task is created which contains celery task which is executed periodically after some time to store last login information.
+   
+9) install_redis.sh script is created in src folder to set up a message broker for celerybeat to transmit messages to task workers. 
+
+10) At the time of running Flask app we also have to run redis ,celerybeat, celery worker to run the task periodically. A superviser can also be created which 
+	can handle this responsiblity of executing all 3 of them simultaneously and handle problem when any one of them crashes. This superviser concept
+	is not implemented currently in this app and celery task is stored in celerytask.task.py .
